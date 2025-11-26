@@ -69,7 +69,7 @@ const Chat = () => {
   const fetchChatHistory = async () => {
     try {
       setIsLoading(true);
-      const res = await API.get("/chat/history");
+      const res = await API.get("/api/chat/history");
       setChatHistory(res.data);
     } catch (err) {
       console.error("Failed to fetch chat history:", err);
@@ -81,7 +81,7 @@ const Chat = () => {
   const loadSession = async (sessionId) => {
     try {
       setIsLoading(true);
-      const res = await API.get(`/chat/${sessionId}`);
+      const res = await API.get(`/api/chat/${sessionId}`);
       const sessionMessages = res.data
         .map((q) => [
           {
@@ -108,7 +108,7 @@ const Chat = () => {
   const handleNewChat = async () => {
     try {
       setIsLoading(true);
-      const res = await API.post("/chat/new");
+      const res = await API.post("/api/chat/new");
       setSelectedSession(res.data._id);
       setMessages([]);
       await fetchChatHistory();
@@ -122,7 +122,7 @@ const Chat = () => {
   const handleVoiceClick = async () => {
     if (!selectedSession) {
       try {
-        const res = await API.post("/chat/new");
+        const res = await API.post("/api/chat/new");
         setSelectedSession(res.data._id);
         setMessages([]);
         await fetchChatHistory();
@@ -158,7 +158,7 @@ const Chat = () => {
     if (!selectedSession) {
       console.log("No selected session, creating new one");
       try {
-        const res = await API.post("/chat/new");
+        const res = await API.post("/api/chat/new");
         setSelectedSession(res.data._id);
         await fetchChatHistory();
       } catch (err) {
@@ -178,7 +178,7 @@ const Chat = () => {
 
     try {
       console.log("Sending message to API:", messageText);
-      const res = await API.post(`/chat/${selectedSession}/question`, { questionText: messageText });
+      const res = await API.post(`/api/chat/${selectedSession}/question`, { questionText: messageText });
       console.log("API response:", res.data);
 
       const botMessage = {
@@ -229,7 +229,7 @@ const Chat = () => {
 
     setIsProcessing(true);
     try {
-      await API.post(`/chat/${chatToRename._id}/rename`, { newTitle: newChatTitle.trim() });
+      await API.post(`/api/chat/${chatToRename._id}/rename`, { newTitle: newChatTitle.trim() });
       setChatHistory((prev) =>
         prev.map((c) => (c._id === chatToRename._id ? { ...c, title: newChatTitle.trim() } : c))
       );
@@ -253,7 +253,7 @@ const Chat = () => {
   const handleDeleteConfirm = async () => {
     setIsProcessing(true);
     try {
-      await API.post(`/chat/${chatToDelete._id}/delete`);
+      await API.post(`/api/chat/${chatToDelete._id}/delete`);
       setChatHistory((prev) => prev.filter((c) => c._id !== chatToDelete._id));
       if (selectedSession === chatToDelete._id) {
         setSelectedSession(null);

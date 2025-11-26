@@ -31,7 +31,7 @@ const Chat = () => {
   const loadSession = async (sessionId) => {
     try {
       setIsLoading(true);
-      const res = await API.get(`/chat/${sessionId}`);
+      const res = await API.get(`/api/chat/${sessionId}`);
       const sessionMessages = res.data
         .map((q) => [
           { 
@@ -63,7 +63,7 @@ const Chat = () => {
   const handleVoiceClick = async () => {
     if (!selectedSession) {
       try {
-        const res = await API.post("/chat/new");
+        const res = await API.post("/api/chat/new");
         setSelectedSession(res.data._id);
         setMessages([]);
       } catch (err) {
@@ -98,7 +98,7 @@ const Chat = () => {
     if (!selectedSession) {
       console.log("No selected session, creating new one");
       try {
-        const res = await API.post("/chat/new");
+        const res = await API.post("/api/chat/new");
         setSelectedSession(res.data._id);
       } catch (err) {
         console.error("Failed to create new chat:", err);
@@ -117,7 +117,7 @@ const Chat = () => {
 
     try {
       console.log("Sending message to API:", messageText);
-      const res = await API.post(`/chat/${selectedSession}/question`, { questionText: messageText });
+      const res = await API.post(`/api/chat/${selectedSession}/question`, { questionText: messageText });
       console.log("API response:", res.data);
       
       const botMessage = {

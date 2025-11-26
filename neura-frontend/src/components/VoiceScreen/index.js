@@ -263,7 +263,7 @@ const VoiceScreenStreaming = () => {
     try {
       setIsLoading(true);
       setIsBotThinking(true); // Show thinking indicator
-      const res = await API.post(`/chat/${sessionId}/question`, { questionText: finalText });
+      const res = await API.post(`/api/chat/${sessionId}/question`, { questionText: finalText });
       const botResp = res.data.answer;
       isProcessingRef.current = false; // Reset processing flag when bot starts responding
       setIsBotThinking(false); // Hide thinking indicator when response arrives

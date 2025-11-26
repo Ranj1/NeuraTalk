@@ -25,7 +25,7 @@ const AuthModal = ({onClose, initialMode = 'login' }) => {
     }
 
     try {
-      const endpoint = isLogin ? "/auth/login" : "/auth/register";
+      const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
       const payload = isLogin ? { email, password } : { username, email, password };
       const res = await API.post(endpoint, payload);
 

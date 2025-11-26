@@ -30,7 +30,7 @@ const Sidebar = ({
 
   const fetchChatHistory = async () => {
     try {
-      const res = await API.get("/chat/history");
+      const res = await API.get("/api/chat/history");
       setChatHistory(res.data);
     } catch (err) {
       console.error("Failed to fetch chat history:", err);
@@ -56,7 +56,7 @@ const Sidebar = ({
 
     setIsProcessing(true);
     try {
-      await API.post(`/chat/${chatToRename._id}/rename`, { newTitle: newChatTitle.trim() });
+      await API.post(`/api/chat/${chatToRename._id}/rename`, { newTitle: newChatTitle.trim() });
       setChatHistory((prev) =>
         prev.map((c) => (c._id === chatToRename._id ? { ...c, title: newChatTitle.trim() } : c))
       );
@@ -79,7 +79,7 @@ const Sidebar = ({
   const handleDeleteConfirm = async () => {
     setIsProcessing(true);
     try {
-      await API.post(`/chat/${chatToDelete._id}/delete`);
+      await API.post(`/api/chat/${chatToDelete._id}/delete`);
       setChatHistory((prev) => prev.filter((c) => c._id !== chatToDelete._id));
       setShowDeleteModal(false);
       setChatToDelete(null);
@@ -104,7 +104,7 @@ const Sidebar = ({
 
   const handleNewChat = async () => {
     try {
-      const res = await API.post("/chat/new");
+      const res = await API.post("/api/chat/new");
       await fetchChatHistory(); // Refresh chat history
       onNewChat(res.data._id); // Notify parent component
     } catch (err) {
